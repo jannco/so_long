@@ -6,16 +6,17 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:09:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/02/19 15:03:59 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:18:02 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int main(void)
+int main(int ac, char **av)
 {
-
-
-
+	if (ac == 2)
+	{
+		ft_error(av[1]);
+	}
 	return 0;
 }

@@ -6,7 +6,7 @@
 #    By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 20:11:52 by yadereve          #+#    #+#              #
-#    Updated: 2024/02/20 09:23:36 by yadereve         ###   ########.fr        #
+#    Updated: 2024/03/11 17:23:56 by yadereve         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,16 @@ ORANGE = \033[0;33m
 RESET = \033[0;0m
 
 #MacOS
-MLX_DIR = minilibx/minilibx_opengl_20191021
-MLX_LIB = $(MLX_DIR)/libmlx.a
-MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlx
-MLX_FLAGS = -L$(MLX_DIR) -Lmlx -lmlx -framework OpenGL -framework AppKit
+#MLX_DIR = minilibx/minilibx_opengl_20191021
+#MLX_LIB = $(MLX_DIR)/libmlx.a
+#MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlx
+#MLX_FLAGS = -L$(MLX_DIR) -Lmlx -lmlx -framework OpenGL -framework AppKit
+
+# Linux
+MLX_DIR = minilibx/minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx_Linux.a
+MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/linux
+MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 
 all: $(NAME)
 
@@ -44,11 +50,12 @@ $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
 	@echo "|__ --|  _  |    |  ||  _  |     |  _  |"
 	@echo "|_____|_____|____|__||_____|__|__|___  |"
 	@echo "           |______|              |_____|$(RESET)"
+	@echo "\ncreate:\t$(GREEN)$(OBJ_DIR)\n\tlibft$(RESET)"
 	@echo "\ncreate:\t$(GREEN)$(OBJ_DIR)\n\t$@$(RESET)"
 	@echo "---- Type: % ./so_long ./maps/a.ber"
 
 $(LIBFT):
-	@$(MAKE) -C ./libft
+	@$(MAKE) -C ./libft --no-print-directory
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -58,13 +65,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@$(RM) $(OBJ_DIR)
-	@$(MAKE) -C ./libft clean
+	@$(MAKE) -C ./libft clean --no-print-directory
 	@echo "remove:\t$(RED)$(OBJ_DIR)$(RESET)"
-
 
 fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) -C ./libft fclean
+	@$(MAKE) -C ./libft fclean --no-print-directory
+	@echo "\t$(RED)"libft.a"$(RESET)"
 	@echo "\t$(RED)$(NAME)$(RESET)"
 
 re: fclean all
