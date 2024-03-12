@@ -26,18 +26,18 @@ typedef struct s_data
 }	t_data;
 
 // MAC_OS
-// # define ESC 53
-// # define W_KEY 13
-// # define A_KEY 0
-// # define S_KEY 1
-// # define D_KEY 2
+# define ESC 53
+# define W_KEY 13
+# define A_KEY 0
+# define S_KEY 1
+# define D_KEY 2
 
 // Linux
-# define ESC 65307
-# define W_KEY 119
-# define A_KEY 97
-# define S_KEY 115
-# define D_KEY 100
+// # define ESC 65307
+// # define W_KEY 119
+// # define A_KEY 97
+// # define S_KEY 115
+// # define D_KEY 100
 
 void	ft_error(char *str);
 int	ft_error_file_map(int fd);

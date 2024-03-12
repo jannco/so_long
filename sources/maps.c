@@ -12,11 +12,13 @@
 
 #include "../include/so_long.h"
 
-int	ft_len_map(int fd, int tmp)
+int	ft_count_line(int fd, int tmp)
 {
 	char	*line;
 	int 	len;
+	int		count_line;
 
+	count_line = 0;
 	line = get_next_line(fd);
 	if (tmp == 0)
 		tmp = ft_strlen(line);
@@ -25,19 +27,16 @@ int	ft_len_map(int fd, int tmp)
 		len = ft_strlen(line);
 		// printf("len = %d\n", len);
 		if (len != tmp)
-			return (1);
-		else
-		{
-			tmp = len;
-			return (ft_len_map(fd, tmp));
-		}
+			return (-1);
+		tmp = len;
+		return (ft_count_line(fd, tmp));
 	}
-	return (0);
+	return (count_line + 1);
 }
 
 int	ft_error_file_map(int fd)
 {
-ft_printf("len = %d\n", ft_len_map(fd, 0));
+ft_printf("len = %d\n", ft_count_line(fd, 0));
 close(fd);
 return (0);
 }
@@ -76,5 +75,6 @@ void	ft_error(char *str)
 	}
 	error_name_map = ft_error_name_map(str);
 	error_file_map = ft_error_file_map(fd);
+
 
 }
