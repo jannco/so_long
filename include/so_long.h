@@ -39,9 +39,9 @@ typedef struct s_data
 # define S_KEY 115
 # define D_KEY 100
 
-void	ft_error(char *str);
-int	ft_error_file_map(int fd);
-int	ft_len_map(int fd, int tmp);
+void	ft_create_map(char *str);
+int	ft_error_file_map(int fd, char *map);
+int	ft_count_line(int fd, int tmp);
 int	ft_error_name_map(char *str);
 
 #endif

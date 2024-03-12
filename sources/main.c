@@ -16,7 +16,7 @@ int main(int ac, char **av)
 {
 	if (ac == 2)
 	{
-		ft_error(av[1]);
+		ft_create_map(av[1]);
 	}
 	return 0;
 }

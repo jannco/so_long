@@ -25,7 +25,7 @@ int	ft_count_line(int fd, int tmp)
 	if (line)
 	{
 		len = ft_strlen(line);
-		// printf("len = %d\n", len);
+		// ft_printf("len = %d\n", len);
 		if (len != tmp)
 			return (-1);
 		tmp = len;
@@ -34,11 +34,24 @@ int	ft_count_line(int fd, int tmp)
 	return (count_line + 1);
 }
 
-int	ft_error_file_map(int fd)
+int	ft_error_file_map(int fd, char *map)
 {
-ft_printf("len = %d\n", ft_count_line(fd, 0));
-close(fd);
-return (0);
+	int	count_line;
+	int	i;
+
+	i = 0;
+	count_line = ft_count_line(fd, 0);
+	map = (char **)malloc(count_line + 1 * sizeof(char));
+	if (map == NULL)
+		return (0);
+	while (i < count_line)
+	{
+		i++;
+	}
+	map[count_line] = NULL;
+	ft_printf("len = %d\n", count_line);
+	close(fd);
+	return (0);
 }
 
 int	ft_error_name_map(char *str)
@@ -62,11 +75,12 @@ int	ft_error_name_map(char *str)
 	exit(1);
 }
 
-void	ft_error(char *str)
+void	ft_create_map(char *str)
 {
-	int	error_name_map;
-	int	error_file_map;
-	int	fd;
+	int		error_name_map;
+	int		error_file_map;
+	int		fd;
+	char	**map;
 
 	fd = open(str, O_RDONLY);
 	if (fd < 0)
@@ -74,7 +88,7 @@ void	ft_error(char *str)
 		perror("file opening filed");
 	}
 	error_name_map = ft_error_name_map(str);
-	error_file_map = ft_error_file_map(fd);
+	error_file_map = ft_error_file_map(fd, &map);
 
 
 }
