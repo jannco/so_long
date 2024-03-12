@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 18:09:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/11 18:18:02 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:11:50 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int main(int ac, char **av)
 {
+	t_mapa	mapa;
+
 	if (ac == 2)
 	{
-		ft_create_map(av[1]);
+		ft_create_map(av[1], &mapa);
 	}
 	return 0;
 }

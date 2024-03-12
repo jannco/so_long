@@ -6,19 +6,18 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:25:03 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/11 20:43:05 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:59:46 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int	ft_count_line(int fd, int tmp)
+void	ft_count_mapa(int fd, int tmp, int count_line, int *parameters)
 {
 	char	*line;
 	int 	len;
-	int		count_line;
 
-	count_line = 0;
+	len = 0;
 	line = get_next_line(fd);
 	if (tmp == 0)
 		tmp = ft_strlen(line);
@@ -27,32 +26,52 @@ int	ft_count_line(int fd, int tmp)
 		len = ft_strlen(line);
 		// ft_printf("len = %d\n", len);
 		if (len != tmp)
-			return (-1);
+		{
+			ft_printf("The map is not fixed");
+			return ;
+		}
 		tmp = len;
-		return (ft_count_line(fd, tmp));
+		count_line++;
+		ft_count_mapa(fd, tmp, count_line, parameters);
 	}
-	return (count_line + 1);
+	if (!line)
+		parameters[0] = count_line;
+	parameters[1] = len;
 }
 
-int	ft_error_file_map(int fd, char *map)
+int	ft_error_file_map(int fd, t_mapa **mapa)
 {
-	int	count_line;
+	int	*parameters;
+	int	len;
+	int	line;
 	int	i;
 
 	i = 0;
-	count_line = ft_count_line(fd, 0);
-	map = (char **)malloc(count_line + 1 * sizeof(char));
-	if (map == NULL)
+	parameters = malloc(sizeof(int) * 2);
+	ft_count_mapa(fd, 0, 0, parameters);
+	line = parameters[0];
+	len = parameters[1];
+	mapa = ft_calloc(line + 1, sizeof(char *));
+	if (mapa == NULL)
 		return (0);
-	while (i < count_line)
-	{
-		i++;
-	}
-	map[count_line] = NULL;
-	ft_printf("len = %d\n", count_line);
+	while (i < len)
+		mapa[i++] = ft_calloc(len + 1, sizeof(char));
+	free(parameters);
+	ft_printf("line = %d\nlen = %d\n", line, len);
 	close(fd);
 	return (0);
 }
+
+// array[7]; = char *
+// a b x d g w i
+
+// malloc(sizeof(char) * len + 1)
+// \0
+
+// array[][] = char **
+// NULL
+
+// malloc(sizeof(char *) * (len + 1))
 
 int	ft_error_name_map(char *str)
 {
@@ -71,16 +90,15 @@ int	ft_error_name_map(char *str)
 				return (0);
 		}
 	}
-	ft_printf("Error name map\n");
+	ft_printf("Error name mapa\n");
 	exit(1);
 }
 
-void	ft_create_map(char *str)
+void	ft_create_map(char *str, t_mapa *mapa)
 {
 	int		error_name_map;
 	int		error_file_map;
 	int		fd;
-	char	**map;
 
 	fd = open(str, O_RDONLY);
 	if (fd < 0)
@@ -88,7 +106,5 @@ void	ft_create_map(char *str)
 		perror("file opening filed");
 	}
 	error_name_map = ft_error_name_map(str);
-	error_file_map = ft_error_file_map(fd, &map);
-
-
+	error_file_map = ft_error_file_map(fd, &mapa);
 }

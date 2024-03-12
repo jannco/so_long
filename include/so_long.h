@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:05:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/11 20:23:53 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:55:34 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ typedef struct s_data
 
 }	t_data;
 
+typedef struct s_mapa
+{
+	char	**mapa;
+	int		line;
+	int		lenght;
+	
+}	t_mapa;
+
 // MAC_OS
 // # define ESC 53
 // # define W_KEY 13
@@ -39,9 +47,9 @@ typedef struct s_data
 # define S_KEY 115
 # define D_KEY 100
 
-void	ft_create_map(char *str);
-int	ft_error_file_map(int fd, char *map);
-int	ft_count_line(int fd, int tmp);
-int	ft_error_name_map(char *str);
+void	ft_create_map(char *str, t_mapa *mapa);
+int		ft_error_name_map(char *str);
+int		ft_error_file_map(int fd, t_mapa **mapa);
+void	ft_count_mapa(int fd, int tmp, int count_line, int *parameters);
 
 #endif
