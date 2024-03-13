@@ -1,45 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 10:25:25 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/13 16:19:15 by yadereve         ###   ########.fr       */
+/*   Created: 2024/03/13 14:41:49 by yadereve          #+#    #+#             */
+/*   Updated: 2024/03/13 18:12:25 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/so_long.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	message_error(char *str)
 {
-	int	i;
-
-	i = 0;
-	if (s && fd)
-	{
-		while (s[i])
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
-	}
+	ft_putendl_fd(str, 2);
+	exit(1);
 }
-/*
-int	main()
-{
-	int		fd;
-	char	*s = "Hello world!";
 
-	fd = open("file.txt", O_RDWR);
-	if (fd == -1)
-	{
-		perror("open");
-		return (1);
-	}
-	printf("fd = %d\n", fd);
-	ft_putstr_fd(s, fd);
-	close(fd);
-	return (0);
-} */
+void	free_map(t_map *map)
+{
+	int i;
+
+	i = -1;
+	while (map->map[++i])
+		free(map->map[i]);
+	free(map);
+}

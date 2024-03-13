@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 18:09:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/12 16:11:50 by yadereve         ###   ########.fr       */
+/*   Created: 2024/03/13 13:20:21 by yadereve          #+#    #+#             */
+/*   Updated: 2024/03/13 14:39:28 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_mapa	mapa;
+	t_map map;
 
-	if (ac == 2)
-	{
-		ft_create_map(av[1], &mapa);
-	}
-	return 0;
+	read_input(ac, av, &map);
+
 }
