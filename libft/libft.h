@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:38:10 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/11 17:44:45 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:04:28 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <stdarg.h>
 # include <stdint.h>
+# include <stdbool.h>
 // # include <string.h>
 // # include <limits.h>
 

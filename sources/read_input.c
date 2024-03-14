@@ -6,15 +6,66 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:20 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/14 16:37:54 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:40:32 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
+bool	access_validate(char **validate)
+{
+	int	player;
+	int	collect;
+	int	space;
+	int	exit;
+
+	player = 0;
+	collect = 0;
+	space = 0;
+	exit = 0;
+	if ()
+}
+
+char	**copy_map(t_map *map)
+{
+	char **copy;
+	int	i;
+
+	i = -1;
+	copy = calloc(map->line + 1, sizeof(char *));
+	if (copy == NULL)
+		free_map(map);
+	while (++i < map->line)
+		copy[i] = ft_strdup(map->map[i]);
+	copy[i] = NULL;
+	return (copy);
+}
+
+void	free_copy_map(char **copy)
+{
+	int i;
+
+	i = -1;
+	while (copy[++i])
+		free(copy[i]);
+	free(copy);
+}
+
 void	check_access(t_map *map)
 {
-	// 
+	char	**validate;
+	int		i;
+
+	i = 0;
+	validate = copy_map(map);
+	if (access_validate(validate))
+		free_copy_map(validate);
+	else
+	{
+		error_message("not map val");
+		free_copy_map(validate);
+		free_map(map);
+	}
 }
 
 void	check_arround_walls(t_map *map)
@@ -27,7 +78,7 @@ void	check_arround_walls(t_map *map)
 	{
 		if (map->map[i][0] != '1' || map->map[i][map->lenght - 1] != '1')
 		{
-			message_error("Map must be surronded not by walls");
+			error_message("Map must be surronded not by walls");
 			free_map(map);
 		}
 		else
@@ -38,7 +89,7 @@ void	check_arround_walls(t_map *map)
 				while (j++ < map->lenght - 1)
 					if (map->map[i][j] != '1')
 						{
-							message_error("Map must be surronded not by walls");
+							error_message("Map must be surronded not by walls");
 							free_map(map);
 						}
 			}
@@ -48,22 +99,28 @@ void	check_arround_walls(t_map *map)
 
 void	check_char(char *str, t_map *map)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (*str == 'P')
+		if (str[i] == 'P')
+			{
 			map->player++;
-		if (*str == '0')
+			map->x = i;
+			}
+		if (str[i] == '0')
 			map->space++;
-		if (*str == 'C')
+		if (str[i] == 'C')
 			map->collect++;
-		if (*str == 'E')
+		if (str[i] == 'E')
 			map->exit++;
-		if (!ft_strchr("0CEP1", *str))
+		if (!ft_strchr("0CEP1", str[i]))
 		{
-			message_error("Invalid character in map");
+			error_message("Invalid character in map");
 			free_map(map);
 		}
-		str++;
+		i++;
 	}
 }
 
@@ -88,17 +145,18 @@ void	validate_map(t_map *map)
 		map->lenght = ft_strlen(map->map[i]);
 		if (map->lenght != len)
 		{
-			message_error("Invalid map dimensions");
+			error_message("Invalid map dimensions");
 			free_map(map);
 		}
 		len = map->lenght;
 		check_char(map->map[i], map);
-		// printf("p = %d, 0 = %d, c = %d, e = %d\n", map->player, map->space, map->collect, map->exit);
+		if (map->player == 1)
+			map->y = i;
 	}
 	if (map->player != 1 || map->collect <= 0 || map->space <= 0
 		|| map->exit != 1)
 	{
-		message_error("Player, Collectible, Exit or Space not found");
+		error_message("Player, Collectible, Exit or Space not found");
 		free_map(map);
 	}
 	check_arround_walls(map);
@@ -115,14 +173,14 @@ void	read_map(int fd, t_map *map, int rows)
 	{
 		map->map = ft_calloc(rows + 1, sizeof(char *));
 		if (map->map == NULL)
-			message_error("Invalid memory allocatin.");
+			error_message("Invalid memory allocatin.");
 		map->line = rows;
 	}
 	if (line)
 	{
 		map->map[rows] = ft_strtrim(line, "\n");
 		if (map->map[rows] == NULL)
-			message_error("Invalid memory allocatin.");
+			error_message("Invalid memory allocatin.");
 		free(line);
 	}
 }
@@ -136,12 +194,12 @@ void	read_input(int ac, char **av, t_map *map)
 	map->space = 0;
 	map->exit = 0;
 	if (ac != 2)
-		message_error("Too many arguments.");
+		error_message("Too many arguments.");
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
-		message_error("The map file must have a .ber extension.");
+		error_message("The map file must have a .ber extension.");
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-		message_error("Invalid file");
+		error_message("Invalid file");
 	read_map(fd, map, 0);
 	// print_map(map);
 	close(fd);

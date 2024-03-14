@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:05:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/13 20:04:35 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:28:34 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_map
 	int		collect;
 	int		space;
 	int		exit;
+	int		x;
+	int		y;
 
 }	t_map;
 
@@ -57,7 +59,7 @@ typedef struct s_map
 // void	ft_count_mapa(int fd, int tmp, int count_line, int *parameters);
 
 void	read_input(int ac, char **av, t_map *map);
-void	message_error(char *str);
+void	error_message(char *str);
 void	read_map(int fd, t_map *map, int rows);
 void	validate_map(t_map *map);
 void	free_map(t_map *map);

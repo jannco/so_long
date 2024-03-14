@@ -6,13 +6,13 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:41:49 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/13 18:12:25 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:28:34 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-void	message_error(char *str)
+void	error_message(char *str)
 {
 	ft_putendl_fd(str, 2);
 	exit(1);
@@ -25,5 +25,5 @@ void	free_map(t_map *map)
 	i = -1;
 	while (map->map[++i])
 		free(map->map[i]);
-	free(map);
+	free(map->map);
 }
