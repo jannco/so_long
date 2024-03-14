@@ -1,0 +1,20 @@
+done:
+check char
+check retagolar
+check arround walls
+111111101
+1       1
+111111111
+
+map[0][i] == WALL
+map[len][i] == WALL
+map[i][0] == WALL
+map[i][rows] == WALL
+
+undone:
+
+check access
+1111111111
+1P0001EC01
+1111111111
+

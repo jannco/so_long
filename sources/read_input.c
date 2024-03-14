@@ -6,34 +6,58 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:20 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/13 20:08:09 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:17:27 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-void	checker_char(char *str, t_map *map)
+void	check_access(t_map *map)
 {
-	int	player;
-	int	collect;
-	int	exit;
-	int	space;
+	
+}
 
-	player = 0;
-	collect = 0;
-	exit = 0;
-	space = 0;
+void	check_arround_walls(t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while(++i < map->line)
+	{
+		if (map->map[i][0] != '1' || map->map[i][map->lenght - 1] != '1')
+		{
+			message_error("Map must be surronded not by walls");
+			free_map(map);
+		}
+		else
+		{
+			j = 0;
+			if (i == 0 || i == map->line - 1)
+			{
+				while (j++ < map->lenght - 1)
+					if (map->map[i][j] != '1')
+						{
+							message_error("Map must be surronded not by walls");
+							free_map(map);
+						}
+			}
+		}
+	}
+}
+
+void	check_char(char *str, t_map *map)
+{
 	while (*str)
 	{
-		printf("char = %c\n", *str);
 		if (*str == 'P')
-			player++;
+			map->player++;
 		if (*str == '0')
-			space++;
+			map->space++;
 		if (*str == 'C')
-			collect++;
+			map->collect++;
 		if (*str == 'E')
-			exit++;
+			map->exit++;
 		if (!ft_strchr("0CEP1", *str))
 		{
 			message_error("Invalid character in map");
@@ -41,10 +65,6 @@ void	checker_char(char *str, t_map *map)
 		}
 		str++;
 	}
-	map->player += player;
-	map->collect += collect;
-	map->space += space;
-	map->exit += exit;
 }
 
 void	print_map(t_map *map)
@@ -72,13 +92,16 @@ void	validate_map(t_map *map)
 			free_map(map);
 		}
 		len = map->lenght;
-		checker_char(map->map[i], map);
-		if (map->player != 1 || map->collect <= 0 || map->space <= 0 || map->exit != 1)
-		{
-			message_error("Player, Collectible, Exit or Space not found");
-			free_map(map);
-		}
+		check_char(map->map[i], map);
+		// printf("p = %d, 0 = %d, c = %d, e = %d\n", map->player, map->space, map->collect, map->exit);
 	}
+	if (map->player != 1 || map->collect <= 0 || map->space <= 0
+		|| map->exit != 1)
+	{
+		message_error("Player, Collectible, Exit or Space not found");
+		free_map(map);
+	}
+	check_arround_walls(map);
 }
 
 void	read_map(int fd, t_map *map, int rows)
@@ -108,6 +131,10 @@ void	read_input(int ac, char **av, t_map *map)
 {
 	int	fd;
 
+	map->player = 0;
+	map->collect = 0;
+	map->space = 0;
+	map->exit = 0;
 	if (ac != 2)
 		message_error("Too many arguments.");
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".ber", 4))
@@ -119,4 +146,5 @@ void	read_input(int ac, char **av, t_map *map)
 	// print_map(map);
 	close(fd);
 	validate_map(map);
+	check_access(map);
 }
