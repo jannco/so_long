@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:20 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/14 16:17:27 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:37:54 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_access(t_map *map)
 {
-	
+	// 
 }
 
 void	check_arround_walls(t_map *map)
