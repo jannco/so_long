@@ -14,10 +14,6 @@
 
 void	fill(char **validate, t_point size, t_point move, int *collect)
 {
-	for (int i = 0; i < size.y; ++i)
-		printf("%s\n", validate[i]);
-	printf("collect = %d\n", *collect);
-	printf("\n");
 	if (move.y < 0 || move.y > size.y || move.x < 0 || move.x > size.x
 		|| !ft_strchr("0PEC", validate[move.y][move.x]))
 		return ;
@@ -153,6 +149,14 @@ void	print_map(t_map *map)
 		ft_putendl_fd(map->map[i], 1);
 }
 
+void	find_player_exit(t_map *map, int i)
+{
+	if (map->player == 1 && map->map[i][map->start.x] == 'P')
+		map->start.y = i;
+	if (map->exit == 1 && map->map[i][map->finish.x] == 'E')
+		map->finish.y = i;
+}
+
 void	validate_map(t_map *map)
 {
 	int	i;
@@ -170,10 +174,7 @@ void	validate_map(t_map *map)
 		}
 		len = map->size.x;
 		check_char(map->map[i], map);
-		if (map->player == 1 && map->map[i][map->start.x] == 'P')
-			map->start.y = i;
-		if (map->exit == 1 && map->map[i][map->finish.x] == 'E')
-			map->finish.y = i;
+		find_player_exit(map, i);
 	}
 	if (map->player != 1 || map->collect <= 0 || map->space <= 0
 		|| map->exit != 1)
