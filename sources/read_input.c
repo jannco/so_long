@@ -12,18 +12,38 @@
 
 #include "../include/so_long.h"
 
-bool	access_validate(char **validate)
+void	fill(char **validate, t_point size, t_point move, int *collect)
 {
-	int	player;
-	int	collect;
-	int	space;
-	int	exit;
+	for (int i = 0; i < size.y; ++i)
+		printf("%s\n", validate[i]);
+	printf("collect = %d\n", *collect);
+	printf("\n");
+	if (move.y < 0 || move.y > size.y || move.x < 0 || move.x > size.x
+		|| !ft_strchr("0PEC", validate[move.y][move.x]))
+		return ;
+	if (validate[move.y][move.x] == 'C')
+		(*collect)++;
+	validate[move.y][move.x] = 'V';
+	fill(validate, size, (t_point){move.x - 1, move.y}, collect);
+	fill(validate, size, (t_point){move.x + 1, move.y}, collect);
+	fill(validate, size, (t_point){move.x, move.y - 1}, collect);
+	fill(validate, size, (t_point){move.x, move.y + 1}, collect);
+}
 
-	player = 0;
+void	flood_fill(char **validate, t_map *map, int *collect)
+{
+	fill(validate, map->size, map->start, collect);
+}
+
+bool	access_validate(char **validate, t_map *map)
+{
+	int	collect;
+
 	collect = 0;
-	space = 0;
-	exit = 0;
-	if ()
+	flood_fill(validate, map, &collect);
+	if (collect > 0 && validate[map->finish.y][map->finish.x] == 'V')
+		return (true);
+	return (false);
 }
 
 char	**copy_map(t_map *map)
@@ -32,10 +52,10 @@ char	**copy_map(t_map *map)
 	int	i;
 
 	i = -1;
-	copy = calloc(map->line + 1, sizeof(char *));
+	copy = calloc(map->size.y + 1, sizeof(char *));
 	if (copy == NULL)
 		free_map(map);
-	while (++i < map->line)
+	while (++i < map->size.y)
 		copy[i] = ft_strdup(map->map[i]);
 	copy[i] = NULL;
 	return (copy);
@@ -54,17 +74,15 @@ void	free_copy_map(char **copy)
 void	check_access(t_map *map)
 {
 	char	**validate;
-	int		i;
 
-	i = 0;
 	validate = copy_map(map);
-	if (access_validate(validate))
+	if (access_validate(validate, map))
 		free_copy_map(validate);
 	else
 	{
-		error_message("not map val");
 		free_copy_map(validate);
 		free_map(map);
+		error_message("Cannot reach exit or collectibles are unreachable.");
 	}
 }
 
@@ -74,24 +92,24 @@ void	check_arround_walls(t_map *map)
 	int	j;
 
 	i = -1;
-	while(++i < map->line)
+	while(++i < map->size.y)
 	{
-		if (map->map[i][0] != '1' || map->map[i][map->lenght - 1] != '1')
+		if (map->map[i][0] != '1' || map->map[i][map->size.x - 1] != '1')
 		{
-			error_message("Map must be surronded not by walls");
 			free_map(map);
+			error_message("Map must be surronded not by walls");
 		}
 		else
 		{
 			j = 0;
-			if (i == 0 || i == map->line - 1)
+			if (i == 0 || i == map->size.y - 1)
 			{
-				while (j++ < map->lenght - 1)
+				while (j++ < map->size.x - 1)
 					if (map->map[i][j] != '1')
-						{
-							error_message("Map must be surronded not by walls");
-							free_map(map);
-						}
+					{
+						free_map(map);
+						error_message("Map must be surronded not by walls");
+					}
 			}
 		}
 	}
@@ -101,26 +119,28 @@ void	check_char(char *str, t_map *map)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == 'P')
-			{
+		{
 			map->player++;
-			map->x = i;
-			}
+			map->start.x = i;
+		}
 		if (str[i] == '0')
 			map->space++;
 		if (str[i] == 'C')
 			map->collect++;
 		if (str[i] == 'E')
+		{
 			map->exit++;
+			map->finish.x = i;
+		}
 		if (!ft_strchr("0CEP1", str[i]))
 		{
-			error_message("Invalid character in map");
 			free_map(map);
+			error_message("Invalid character in map");
 		}
-		i++;
 	}
 }
 
@@ -142,22 +162,24 @@ void	validate_map(t_map *map)
 	len = ft_strlen(map->map[0]);
 	while (map->map[++i])
 	{
-		map->lenght = ft_strlen(map->map[i]);
-		if (map->lenght != len)
+		map->size.x = ft_strlen(map->map[i]);
+		if (map->size.x != len)
 		{
-			error_message("Invalid map dimensions");
 			free_map(map);
+			error_message("Invalid map dimensions");
 		}
-		len = map->lenght;
+		len = map->size.x;
 		check_char(map->map[i], map);
-		if (map->player == 1)
-			map->y = i;
+		if (map->player == 1 && map->map[i][map->start.x] == 'P')
+			map->start.y = i;
+		if (map->exit == 1 && map->map[i][map->finish.x] == 'E')
+			map->finish.y = i;
 	}
 	if (map->player != 1 || map->collect <= 0 || map->space <= 0
 		|| map->exit != 1)
 	{
-		error_message("Player, Collectible, Exit or Space not found");
 		free_map(map);
+		error_message("Player, Collectible, Exit or Space not found");
 	}
 	check_arround_walls(map);
 }
@@ -174,7 +196,7 @@ void	read_map(int fd, t_map *map, int rows)
 		map->map = ft_calloc(rows + 1, sizeof(char *));
 		if (map->map == NULL)
 			error_message("Invalid memory allocatin.");
-		map->line = rows;
+		map->size.y = rows;
 	}
 	if (line)
 	{

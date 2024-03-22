@@ -25,17 +25,23 @@ typedef struct s_data
 
 }	t_data;
 
+typedef struct s_point
+{
+	int x;
+	int y;
+
+} t_point;
+
 typedef struct s_map
 {
 	char	**map;
-	int		line;
-	int		lenght;
 	int		player;
 	int		collect;
 	int		space;
 	int		exit;
-	int		x;
-	int		y;
+	t_point	start;
+	t_point	size;
+	t_point	finish;
 
 }	t_map;
 
