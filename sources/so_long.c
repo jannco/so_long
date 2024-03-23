@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:20:21 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/14 14:53:57 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/23 11:57:53 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,6 @@ int	main(int ac, char **av)
 	t_map map;
 
 	read_input(ac, av, &map);
+	mlx_start(&map);
+	free_map(&map);
 }

@@ -6,14 +6,22 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:20 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/14 18:40:32 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/23 11:51:05 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
+void	print_copy_map(char **map, t_point size)
+{
+	for (int i = 0; i < size.y; i++)
+		printf("%s\n", map[i]);
+	printf("\n");
+}
+
 void	fill(char **validate, t_point size, t_point move, int *collect)
 {
+	// print_copy_map(validate, size);
 	if (move.y < 0 || move.y > size.y || move.x < 0 || move.x > size.x
 		|| !ft_strchr("0PEC", validate[move.y][move.x]))
 		return ;
@@ -31,13 +39,13 @@ void	flood_fill(char **validate, t_map *map, int *collect)
 	fill(validate, map->size, map->start, collect);
 }
 
-bool	access_validate(char **validate, t_map *map)
+bool	access_validate(char **valid, t_map *map)
 {
 	int	collect;
 
 	collect = 0;
-	flood_fill(validate, map, &collect);
-	if (collect > 0 && validate[map->finish.y][map->finish.x] == 'V')
+	flood_fill(valid, map, &collect);
+	if (collect == map->collect && valid[map->finish.y][map->finish.x] == 'V')
 		return (true);
 	return (false);
 }
@@ -180,7 +188,7 @@ void	validate_map(t_map *map)
 		|| map->exit != 1)
 	{
 		free_map(map);
-		error_message("Player, Collectible, Exit or Space not found");
+		error_message("Player, Collectible, Exit or Space not found full");
 	}
 	check_arround_walls(map);
 }

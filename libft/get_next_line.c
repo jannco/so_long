@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:24:48 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/11 18:37:33 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:11:22 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static char	*ft_strjoin_line(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	str = (char *)malloc((ft_strlen_line(s1) + ft_strlen_line(s2) + 1) * sizeof(char));
+	str = (char *)malloc((ft_strlen_line(s1) + ft_strlen_line(s2) + 1)
+			* sizeof(char));
 	if (!str)
 		return (free(s1), NULL);
 	while (s1 && s1[i])

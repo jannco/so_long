@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:05:06 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/14 18:28:34 by yadereve         ###   ########.fr       */
+/*   Upmlxd: 2024/03/23 12:34:49 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,22 @@
 # include "../libft/libft.h"
 # include <errno.h>
 
-typedef struct s_data
+typedef struct s_img
 {
-	void	*mlx;
-	void	*win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_lenght;
+	int		endian;
 
-}	t_data;
+}	t_img;
 
 typedef struct s_point
 {
 	int x;
 	int y;
 
-} t_point;
+}	t_point;
 
 typedef struct s_map
 {
@@ -44,6 +47,17 @@ typedef struct s_map
 	t_point	finish;
 
 }	t_map;
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+	t_map	*map;
+	t_img	*img;
+	int		width;
+	int		height;
+
+}	t_mlx;
 
 // MAC_OS
 // # define ESC 53
@@ -64,10 +78,21 @@ typedef struct s_map
 // int		ft_error_file_map(int fd, t_map **mapa);
 // void	ft_count_mapa(int fd, int tmp, int count_line, int *parameters);
 
-void	read_input(int ac, char **av, t_map *map);
 void	error_message(char *str);
-void	read_map(int fd, t_map *map, int rows);
-void	validate_map(t_map *map);
 void	free_map(t_map *map);
+void	fill(char **valimlx, t_point size, t_point move, int *collect);
+void	flood_fill(char **valimlx, t_map *map, int *collect);
+bool	access_validate(char **valid, t_map *map);
+char	**copy_map(t_map *map);
+void	free_copy_map(char **copy);
+void	check_access(t_map *map);
+void	check_arround_walls(t_map *map);
+void	check_char(char *str, t_map *map);
+void	print_map(t_map *map);
+void	find_player_exit(t_map *map, int i);
+void	validate_map(t_map *map);
+void	read_map(int fd, t_map *map, int rows);
+void	read_input(int ac, char **av, t_map *map);
+void	mlx_start(t_map *map);
 
 #endif
