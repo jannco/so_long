@@ -6,7 +6,7 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:20 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/23 11:51:05 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/23 17:09:25 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	check_arround_walls(t_map *map)
 	int	j;
 
 	i = -1;
-	while(++i < map->size.y)
+	while (++i < map->size.y)
 	{
 		if (map->map[i][0] != '1' || map->map[i][map->size.x - 1] != '1')
 		{
@@ -109,11 +109,13 @@ void	check_arround_walls(t_map *map)
 			if (i == 0 || i == map->size.y - 1)
 			{
 				while (j++ < map->size.x - 1)
+				{
 					if (map->map[i][j] != '1')
 					{
 						free_map(map);
 						error_message("Map must be surronded not by walls");
 					}
+				}
 			}
 		}
 	}
@@ -150,7 +152,7 @@ void	check_char(char *str, t_map *map)
 
 void	print_map(t_map *map)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (map->map[++i])
