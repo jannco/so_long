@@ -21,5 +21,6 @@ map[i][rows] == WALL
 undone:
 
 
+
 info:
 https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html

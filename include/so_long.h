@@ -18,6 +18,13 @@
 # include "../libft/libft.h"
 # include <errno.h>
 
+typedef struct s_point
+{
+	int x;
+	int y;
+
+}	t_point;
+
 typedef struct s_img
 {
 	void	*img;
@@ -25,15 +32,10 @@ typedef struct s_img
 	int		bits_per_pixel;
 	int		line_lenght;
 	int		endian;
+	t_point	box;
+	int		cor;
 
 }	t_img;
-
-typedef struct s_point
-{
-	int x;
-	int y;
-
-}	t_point;
 
 typedef struct s_map
 {
@@ -72,6 +74,10 @@ typedef struct s_mlx
 # define A_KEY 97
 # define S_KEY 115
 # define D_KEY 100
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 653
 
 // void	ft_create_map(char *str, t_map *mapa);
 // int		ft_error_name_map(char *str);
