@@ -24,3 +24,7 @@ undone:
 
 info:
 https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html
+
+#debug
+lldb linux & mac
+gdb linux

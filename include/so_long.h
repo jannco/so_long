@@ -25,18 +25,6 @@ typedef struct s_point
 
 }	t_point;
 
-typedef struct s_img
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_lenght;
-	int		endian;
-	t_point	box;
-	int		cor;
-
-}	t_img;
-
 typedef struct s_map
 {
 	char	**map;
@@ -49,6 +37,22 @@ typedef struct s_map
 	t_point	finish;
 
 }	t_map;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_lenght;
+	int		endian;
+	int		x;
+	int		y;
+	int		width;
+	int		height;
+	int		cor;
+	struct s_img	*next;
+
+}	t_img;
 
 typedef struct s_mlx
 {

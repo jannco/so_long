@@ -6,19 +6,11 @@
 /*   By: yadereve <yadereve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:47:07 by yadereve          #+#    #+#             */
-/*   Updated: 2024/03/25 21:48:53 by yadereve         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:52:37 by yadereve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
-
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = img->addr + (y * img->line_lenght + x * (img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
 
 void	initialization(t_map *map, t_mlx *date)
 {
@@ -32,52 +24,66 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int	render_square(t_mlx *date, int i, int j)
+int	render_square(t_mlx *date)
 {
 	int	x;
 	int	y;
 
 	x = 350;
 	y = 350;
-	printf("box_x = %d\t", x + date->img->box.x);
-	printf("box_y = %d\n", y + date->img->box.y);
-	while(x < 450)
+	int box_x = date->img->height + x;
+	int box_y = date->img->width + y;
+	// printf("box_x = %d\t", x + date->box_x);
+	// printf("box_y = %d\n", y + date->box_y);
+	mlx_clear_window(date->mlx, date->win);
+	while(x < box_x)
 	{
-		while (y < 450)
+		while (y < box_y)
 		{
-			my_mlx_pixel_put(date->img, x + i, y + j, date->img->cor);
-			// my_mlx_pixel_put(date->img, x, y, date->img->cor);
+			mlx_pixel_put(date->mlx, date->win, x + date->img->x, y + date->img->y, 0xFF0000);
 			y++;
 		}
 		y = 350;
 		x++;
 	}
+	mlx_do_sync(date->mlx);
+	return (1);
+}
+
+int	render_image(t_mlx *date)
+{
+	int	x;
+	int	y;
+
+	x = 350;
+	y = 350;
+	int obj_w = date->img->width + x;
+	int obj_h = date->img->height + y;
+	mlx_clear_window(date->mlx, date->win);
+	while(x < obj_w)
+	{
+		while (y < obj_h)
+		{
+			mlx_put_image_to_window(date->mlx, date->win, date->img->img, date->img->x, date->img->y);
+			y++;
+		}
+		y = 350;
+		x++;
+	}
+	mlx_do_sync(date->mlx);
 	return (1);
 }
 
 int	keys(int keycode, t_mlx *date)
 {
-	//printf("KEY = %d\n", keycode);
 	if (keycode == A_KEY || keycode == LEFT)
-	{
-		date->img->box.x -= 10;
-		render_square(date, date->img->box.x, date->img->box.y);
-	}
+		date->img->x -= 50;
 	if (keycode == D_KEY || keycode == RIGHT)
-	{
-		date->img->box.x += 10;
-		render_square(date, date->img->box.x, date->img->box.y);
-	}
+		date->img->x += 50;
 	if (keycode == W_KEY || keycode == UP)
-	{
-		date->img->box.y += 10;
-		render_square(date, date->img->box.x, date->img->box.y);
-	}
+		date->img->y -= 50;
 	if (keycode == S_KEY || keycode == DOWN)
-	{
-		date->img->box.y -= 10;
-		render_square(date, date->img->box.x, date->img->box.y);
-	}
+		date->img->y += 50;
 
 	if (keycode == ESC)
 	{
@@ -90,39 +96,41 @@ int	keys(int keycode, t_mlx *date)
 void	mlx_start(t_map *map)
 {
 	t_mlx	date;
-	t_img	img;
 
 	date.height = 760;
 	date.width = 1080;
-	date.map = map;
-	img.cor = create_trgb(0, 255, 0, 0);
-	img.box.x = 0;
-	img.box.y = 0;
-	date.img = &img;
+	date.img->x = 0;
+	date.img->y = 0;
+	date.img->next = 0;
+	date.img->img = mlx_xpm_file_to_image(date.mlx, "../textures/wall.xpm", &date.img->width, &date.img->height);
+	// date.img->height = 50;
+	// date.img->width = 50;
+	date.img->cor = create_trgb(0, 255, 0, 0);
 
 	initialization(map, &date);
-	// image
-	img.img = mlx_new_image(date.mlx, date.width, date.height);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_lenght,
-			&img.endian);
+	// * image * //
+	mlx_loop_hook(date.mlx, render_image, &date);
 
-	for (int i = 0; i < 50; i++)
-		my_mlx_pixel_put(&img, 50 + i, 50 + i, img.cor);
-	for (int i = 0; i < 50; i++)
-		my_mlx_pixel_put(&img, 100 - i, 100, 0x0000FF00);
-	for (int i = 0; i < 50; i++)
-		my_mlx_pixel_put(&img, 50, 100 - i, 0x000000FF);
-	mlx_put_image_to_window(date.mlx, date.win, img.img, 0, 0);
+
 	// * create_square * //
+	// render_square(&date);
+	// mlx_loop_hook(date.mlx, render_square, &date);
 
 	// * keys * //
 	mlx_hook(date.win, 2, 1L<<0, keys, &date);
 	// printf("box_x = %d\t", date.img->box.x);
-	render_square(&date, date.img->box.x, date.img->box.y);
 	// printf("box_y = %d\n", date.img->box.y);
-	//mlx_loop_hook(date.mlx, render_square, &date);
 
-	// loop mlx, not closed win
+
+	// var.mlx = mlx_init();
+	// var.win = mlx_new_window(var.mlx, 1080, 760, "demo");
+	// mlx_loop_hook(var.mlx, render_square, &var);
+	// mlx_hook(var.win, 2, 1L<<0, keys, &var);
+	// mlx_loop(var.mlx);
+
+
+
+	// * loop mlx, not closed win * //
 	mlx_loop(date.mlx);
 
 }
