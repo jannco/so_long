@@ -60,18 +60,24 @@ typedef struct s_mlx
 	void	*win;
 	t_map	*map;
 	t_img	*img;
+	t_img	*wall;
 	int		width;
 	int		height;
 
 }	t_mlx;
 
+#ifndef MACOS
 // MAC_OS
-// # define ESC 53
-// # define W_KEY 13
-// # define A_KEY 0
-// # define S_KEY 1
-// # define D_KEY 2
-
+# define ESC 53
+# define W_KEY 13
+# define A_KEY 0
+# define S_KEY 1
+# define D_KEY 2
+# define UP 126
+# define DOWN 125
+# define LEFT 123
+# define RIGHT 124
+#else
 // Linux
 # define ESC 65307
 # define W_KEY 119
@@ -82,6 +88,7 @@ typedef struct s_mlx
 # define DOWN 65364
 # define LEFT 65361
 # define RIGHT 653
+#endif
 
 // void	ft_create_map(char *str, t_map *mapa);
 // int		ft_error_name_map(char *str);

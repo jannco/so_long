@@ -28,3 +28,7 @@ https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html
 #debug
 lldb linux & mac
 gdb linux
+
+Makefile (if, else)
+printenv | grep USER
+env

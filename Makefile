@@ -29,17 +29,19 @@ BLUE = \033[1;34m
 ORANGE = \033[0;33m
 RESET = \033[0;0m
 
-#MacOS
-#MLX_DIR = minilibx/minilibx_opengl_20191021
-#MLX_LIB = $(MLX_DIR)/libmlx.a
-#MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlx
-#MLX_FLAGS = -L$(MLX_DIR) -Lmlx -lmlx -framework OpenGL -framework AppKit
-
+ifdef USER
+# MacOS
+	MLX_DIR = minilibx/minilibx_opengl_20191021
+	MLX_LIB = $(MLX_DIR)/libmlx.a
+	MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlxq
+	MLX_FLAGS = -L$(MLX_DIR) -Lmlx -lmlx -framework OpenGL -framework AppKit
+else
 # Linux
-MLX_DIR = minilibx/minilibx-linux
-MLX_LIB = $(MLX_DIR)/libmlx_Linux.a
-MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/linux
-MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
+	MLX_DIR = minilibx/minilibx-linux
+	MLX_LIB = $(MLX_DIR)/libmlx_Linux.a
+	MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/linux
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
+endif
 
 all: $(NAME)
 
