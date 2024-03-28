@@ -43,7 +43,7 @@ void	initialization(t_map *map, t_mlx *date)
 	date->mlx = mlx_init();
 	date->win = mlx_new_window(date->mlx, date->width, date->height, "so_long");
 	hero(date);
-	// barrier(date);
+	barrier(date);
 }
 
 int	create_trgb(int t, int r, int g, int b)
@@ -78,8 +78,8 @@ int	render_square(t_mlx *date)
 int	render_image(t_mlx *date)
 {
 	mlx_clear_window(date->mlx, date->win);
-	render_square(date);
-	// mlx_put_image_to_window(date->mlx, date->win, date->bar->img, date->bar->x, date->bar->y);
+	// render_square(date);
+	mlx_put_image_to_window(date->mlx, date->win, date->bar->img, date->bar->x, date->bar->y);
 	mlx_put_image_to_window(date->mlx, date->win, date->hero->img, date->hero->x, date->hero->y);
 	mlx_do_sync(date->mlx);
 	return (1);
@@ -87,6 +87,7 @@ int	render_image(t_mlx *date)
 
 int	keys(int keycode, t_mlx *date)
 {
+
 	// printf("key = %d\n", keycode);
 	if (keycode == A_KEY || keycode == LEFT)
 		date->hero->x -= 32;

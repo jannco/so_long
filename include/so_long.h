@@ -66,7 +66,7 @@ typedef struct s_mlx
 
 }	t_mlx;
 
-#ifndef MACOS
+#ifndef NULL
 // MAC_OS
 # define ESC 53
 # define W_KEY 13
@@ -87,7 +87,7 @@ typedef struct s_mlx
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
-# define RIGHT 653
+# define RIGHT 65363
 #endif
 
 // void	ft_create_map(char *str, t_map *mapa);
