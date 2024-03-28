@@ -58,11 +58,11 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
-	t_map	*map;
-	t_img	*img;
-	t_img	*wall;
 	int		width;
 	int		height;
+	t_map	*map;
+	t_img	*bar;
+	t_img	*hero;
 
 }	t_mlx;
 

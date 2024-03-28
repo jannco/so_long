@@ -31,12 +31,14 @@ RESET = \033[0;0m
 
 ifdef USER
 # MacOS
+	INFO = "MacOS"
 	MLX_DIR = minilibx/minilibx_opengl_20191021
 	MLX_LIB = $(MLX_DIR)/libmlx.a
-	MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlxq
-	MLX_FLAGS = -L$(MLX_DIR) -Lmlx -lmlx -framework OpenGL -framework AppKit
+	MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/libmlx
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 else
 # Linux
+	INFO = Linux
 	MLX_DIR = minilibx/minilibx-linux
 	MLX_LIB = $(MLX_DIR)/libmlx_Linux.a
 	MLX_INC = -I$(MLX_DIR) -I$(MLX_DIR)/linux
@@ -52,6 +54,7 @@ $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
 	@echo "|__ --|  _  |    |  ||  _  |     |  _  |"
 	@echo "|_____|_____|____|__||_____|__|__|___  |"
 	@echo "           |______|              |_____|$(RESET)"
+	@echo "$(INFO)"
 	@echo "\ncreate:\t$(GREEN)$(OBJ_DIR)\n\tlibft$(RESET)"
 	@echo "\ncreate:\t$(GREEN)$(OBJ_DIR)\n\t$@$(RESET)"
 	@echo "---- Type: % ./so_long ./maps/a.ber"
